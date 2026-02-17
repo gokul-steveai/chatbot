@@ -64,3 +64,7 @@ async def prepare_prompt_with_history(prompt: str, user_id: int, db: AsyncSessio
         """)
     else:
         return prompt
+    
+    
+    
+    
