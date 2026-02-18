@@ -23,7 +23,7 @@ class TokenService:
             payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
             return payload
         except JWTError:
-            logger.error('Invalid JWT token.')
+            logger.warning('Invalid JWT token.')
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid authentication credentials"

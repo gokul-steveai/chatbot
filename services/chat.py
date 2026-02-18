@@ -26,13 +26,13 @@ class ChatService:
         return result.scalars().all()
     
     @staticmethod
-    async def get_recent_history(user_id: int, db: AsyncSession, limit: int = 3) -> list[ChatSession]:
+    async def get_recent_history(user_id: int, db: AsyncSession, limit: int = 3) -> list[tuple[str, str]]:
         result = await db.execute(
-            select(ChatSession)
+            select(ChatSession.query, ChatSession.response)
             .filter(ChatSession.user_id == user_id)
             .order_by(desc(ChatSession.created_at), desc(ChatSession.id))
             .limit(limit)
         )
         
         logger.info('Fetched recent chat history')
-        return result.scalars().all()
+        return result.all()

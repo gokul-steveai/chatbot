@@ -13,7 +13,7 @@ class AuthService:
     async def authenticate_user(email: str, password: str, db: AsyncSession) -> User:
         user = await UserService.get_user_by_email(email, db)
         if not user or not HashService.verify_password(password, user.hashed_password):
-            logger.error('Invalid login credentials')
+            logger.warning('Invalid login credentials')
             raise HTTPException(status_code=401, detail="Invalid credentials")
         return user
     
