@@ -7,7 +7,7 @@ from langchain_chroma import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
-from config import settings
+from core.config import settings
 
 
 class RAGPipeline:
@@ -46,6 +46,7 @@ class RAGPipeline:
     def build_chain(self):
         self.llm = ChatGoogleGenerativeAI(model=self.model_name, temperature=0, max_output_tokens=1024, api_key=settings.gemini_api_key)
         retriever = self.vector_store.as_retriever(search_type='similarity', search_kwargs={'k': 4,})
+        
         template = """Answer the question based ONLY on the following context:
         {context}
         
@@ -62,5 +63,4 @@ class RAGPipeline:
         return self
     
     async def query(self, question: str) -> str:
-        print(f'')
         return await self.chain.ainvoke(question)
