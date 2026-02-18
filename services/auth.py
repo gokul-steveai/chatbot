@@ -6,13 +6,14 @@ from core.config import settings
 from datetime import timedelta
 from services.hash import HashService
 from services.token import TokenService
-
+from core.logger import logger
 
 class AuthService:
     @staticmethod
     async def authenticate_user(email: str, password: str, db: AsyncSession) -> User:
         user = await UserService.get_user_by_email(email, db)
         if not user or not HashService.verify_password(password, user.hashed_password):
+            logger.error('Invalid login credentials')
             raise HTTPException(status_code=401, detail="Invalid credentials")
         return user
     

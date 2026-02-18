@@ -8,6 +8,7 @@ from dependencies.rag import get_rag_pipeline
 from core.auth_handler import get_current_user
 from db.connect import get_db
 from rag import RAGPipeline
+from core.logger import logger
 
 user_router = APIRouter(prefix="/users", tags=["Users API"])
 
@@ -20,6 +21,7 @@ async def get_history(
     ) -> ApiResponse[list[ChatHistory]]:
     
     chat_history = await ChatService.get_user_history(current_user.id, db, page, limit)
+    logger.info(f'{len(chat_history)} chat history fetched successfully')
     return ApiResponse(data=chat_history)
 
 
@@ -38,7 +40,7 @@ async def query_response(
         response = await rag_pipeline.query(prompt)
         await ChatService.save_chat(current_user.id, body.query, response, db)
     except Exception as e:
-        print(f"Error during query: {e}")
+        logger.error(f"Error during query: {e}")
         response = "Sorry, I couldn't process your request at the moment."
         response.status_code = status.HTTP_400_BAD_REQUEST
         

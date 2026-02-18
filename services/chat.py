@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc
 from db.models import ChatSession
+from core.logger import logger
 
 class ChatService:
     @staticmethod
@@ -9,6 +10,7 @@ class ChatService:
         db.add(chat_session)
         await db.commit()
         await db.refresh(chat_session)
+        logger.info("Chat history saved successfully.")
         return chat_session
     
     @staticmethod
@@ -19,6 +21,8 @@ class ChatService:
             .offset((page - 1)* limit).limit(limit)
             .order_by(desc(ChatSession.created_at), desc(ChatSession.id))
         )
+        
+        logger.info('Successfully fetched the user chat history.')
         return result.scalars().all()
     
     @staticmethod
@@ -29,4 +33,6 @@ class ChatService:
             .order_by(desc(ChatSession.created_at), desc(ChatSession.id))
             .limit(limit)
         )
+        
+        logger.info('Fetched recent chat history')
         return result.scalars().all()
