@@ -4,7 +4,8 @@ from db.models import User
 from services.chat import ChatService
 from services.prompt import PromptService
 from sqlalchemy.ext.asyncio import AsyncSession
-from utils import get_current_user, get_rag_pipeline
+from dependencies.rag import get_rag_pipeline
+from core.auth_handler import get_current_user
 from db.connect import get_db
 from rag import RAGPipeline
 
