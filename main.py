@@ -19,16 +19,3 @@ app = FastAPI(title='Chatbot', lifespan=lifespan)
 
 app.include_router(auth_router)
 app.include_router(user_router)
-    
-
-@app.exception_handler(StarletteException)
-async def global_exception_handler(request: Request, exc: StarletteException):
-    print(f'Inside global exception handler: Details: {exc.detail}')
-    
-    return JSONResponse(
-        status_code=500,
-        content={
-            "error": "Internal server error",
-            "message": str(exc.detail)
-        }
-    )
