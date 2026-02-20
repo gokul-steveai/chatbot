@@ -1,0 +1,7 @@
+Date: 18 Feb 2026
+- Worked on restructuring of project structure (services, core, schema, dependencies)
+- Split the service code into smaller and reusable components
+- Added a logger in the project and optimized some of the DB calls.
+- Make a unified response format for the whole application (ApiResponse)
+- Cleaned the project entry file and moved the code to their respective parts
+- Test the application flow.
